@@ -97,9 +97,25 @@ async function fetchFromGoogleBusinessProfile(): Promise<Review[]> {
 
 async function loadMockReviews(): Promise<Review[]> {
   try {
-    const mockPath = path.join(process.cwd(), 'src/mock/reviews.json');
-    const mockData = await fs.readFile(mockPath, 'utf-8');
-    return JSON.parse(mockData) as Review[];
+    // Try multiple possible paths for the mock file
+    const possiblePaths = [
+      path.join(process.cwd(), 'src/mock/reviews.json'), // From root
+      path.join(process.cwd(), '../../src/mock/reviews.json'), // From examples/next
+      path.join(__dirname, '../mock/reviews.json'), // Relative to this file
+      path.join(__dirname, '../../mock/reviews.json'), // Relative to this file (alt)
+    ];
+
+    for (const mockPath of possiblePaths) {
+      try {
+        const mockData = await fs.readFile(mockPath, 'utf-8');
+        return JSON.parse(mockData) as Review[];
+      } catch (err) {
+        // Continue to next path
+        continue;
+      }
+    }
+    
+    throw new Error('Mock reviews file not found in any expected location');
   } catch (error) {
     console.error('Failed to load mock reviews:', error);
     return [];
