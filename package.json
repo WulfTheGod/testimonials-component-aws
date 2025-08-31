@@ -31,5 +31,9 @@
     "ts-node": "^10.9.0",
     "typescript": "^5.8.3",
     "vitest": "^1.0.0"
+  },
+  "dependencies": {
+    "framer-motion": "^12.23.12",
+    "lucide-react": "^0.542.0"
   }
 }

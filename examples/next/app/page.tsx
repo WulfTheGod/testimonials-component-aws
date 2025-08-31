@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Testimonials } from '../../../src/components/Testimonials';
+import WorkingTestimonials from '../../../src/components/WorkingTestimonials';
 import type { Review } from '../../../src/types/review';
 
 export default function HomePage() {
@@ -50,7 +50,7 @@ export default function HomePage() {
           Showing {reviews.length} reviews from Google Business Profile (or mock data)
         </p>
       </div>
-      <Testimonials reviews={reviews} />
+      <WorkingTestimonials reviews={reviews} />
     </main>
   );
 }
