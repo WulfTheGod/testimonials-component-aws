@@ -28,33 +28,81 @@ A minimal, production-ready testimonials component that fetches real Google Busi
 
 ## Usage
 
-### Server-side (Recommended)
+### Simple Example
 
 ```tsx
-import { Testimonials } from './src/components/Testimonials';
-import { fetchGoogleReviews } from './src/server/fetchGoogleReviews';
-import type { Review } from './src/types/review';
+import { Testimonials } from 'testimonials-component';
 
-// Fetch reviews server-side
-const reviews = await fetchGoogleReviews();
-
-// Render component
-<Testimonials reviews={reviews} title="Customer Reviews" limit={6} />
+export default function App() {
+  return (
+    <div>
+      <h1>My Website</h1>
+      {/* Component with built-in mock data - works out of the box! */}
+      <Testimonials />
+    </div>
+  );
+}
 ```
 
-### Client-side (via API)
+### With Custom Reviews
 
 ```tsx
-// See examples/next/app/page.tsx for full implementation
-const [reviews, setReviews] = useState<Review[]>([]);
+import { Testimonials } from 'testimonials-component';
+import type { Review } from 'testimonials-component';
 
-useEffect(() => {
-  fetch('/api/testimonials')
-    .then(res => res.json())
-    .then(setReviews);
-}, []);
+const customReviews: Review[] = [
+  {
+    id: "1",
+    name: "Sarah Johnson",
+    role: "Homeowner",
+    content: "Exceptional service! Professional team that delivered exactly what we needed.",
+    rating: 5,
+    location: "Montreal, QC",
+    project: "Kitchen Renovation",
+    source: "google",
+    createdAt: "2024-02-15T10:30:00Z",
+    image: "https://ui-avatars.com/api/?name=SJ&background=6366f1&color=fff"
+  }
+];
 
-<Testimonials reviews={reviews} />
+export default function App() {
+  return <Testimonials reviews={customReviews} />;
+}
+```
+
+### Server-side (Next.js App Router)
+
+```tsx
+import { Testimonials } from 'testimonials-component';
+import { fetchGoogleReviews } from 'testimonials-component';
+
+export default async function HomePage() {
+  // Fetch reviews server-side
+  const reviews = await fetchGoogleReviews();
+  
+  return <Testimonials reviews={reviews} />;
+}
+```
+
+### Client-side with API
+
+```tsx
+'use client';
+import { useState, useEffect } from 'react';
+import { Testimonials } from 'testimonials-component';
+import type { Review } from 'testimonials-component';
+
+export default function HomePage() {
+  const [reviews, setReviews] = useState<Review[]>([]);
+
+  useEffect(() => {
+    fetch('/api/testimonials')
+      .then(res => res.json())
+      .then(setReviews);
+  }, []);
+
+  return <Testimonials reviews={reviews} />;
+}
 ```
 
 ## Google Business Profile API
