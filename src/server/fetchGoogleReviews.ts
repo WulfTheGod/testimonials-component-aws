@@ -35,15 +35,57 @@ function mapStarRating(rating: string): number {
 }
 
 function mapGoogleReviewToReview(googleReview: GoogleBusinessProfileReview): Review {
+  const initials = getInitials(googleReview.reviewer.displayName);
+  const backgroundColor = getColorFromName(googleReview.reviewer.displayName);
+  
   return {
     id: googleReview.reviewId,
-    author: googleReview.reviewer.displayName,
+    name: formatName(googleReview.reviewer.displayName),
+    role: 'Verified Customer',
+    content: googleReview.comment,
     rating: mapStarRating(googleReview.starRating),
-    text: googleReview.comment,
     createdAt: googleReview.createTime,
-    profilePhotoUrl: googleReview.reviewer.profilePhotoUrl,
+    image: googleReview.reviewer.profilePhotoUrl || 
+      `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${backgroundColor}&color=fff&size=100&bold=true&format=png`,
+    location: 'Montreal, QC', // Default location, could be enhanced with actual data
+    source: 'google',
     url: `https://maps.google.com/?q=${googleReview.name}`,
   };
+}
+
+function formatName(fullName: string): string {
+  if (!fullName || fullName.trim() === '') return 'Google User';
+  
+  const parts = fullName.trim().split(/\s+/);
+  if (parts.length === 0) return 'Google User';
+  if (parts.length === 1) return parts[0];
+  
+  // Return first name and last initial (John D.)
+  return `${parts[0]} ${parts[parts.length - 1].charAt(0)}.`;
+}
+
+function getInitials(name: string): string {
+  if (!name || name === '') return 'GU';
+  
+  const parts = name.trim().split(/\s+/).filter(part => part.length > 0);
+  if (parts.length === 0) return 'GU';
+  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
+
+function getColorFromName(name: string): string {
+  const colors = [
+    '6366f1', '8b5cf6', '06b6d4', '10b981', 'f59e0b',
+    'ef4444', '84cc16', 'f97316', 'ec4899', '3b82f6'
+  ];
+  
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  
+  return colors[Math.abs(hash) % colors.length];
 }
 
 async function fetchFromGoogleBusinessProfile(): Promise<Review[]> {

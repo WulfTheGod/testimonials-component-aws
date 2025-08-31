@@ -26,15 +26,56 @@ function mapStarRating(rating: string): number {
 }
 
 function mapGoogleReviewToReview(googleReview: GoogleBusinessProfileReview): Review {
+  const initials = getInitials(googleReview.reviewer.displayName);
+  const backgroundColor = getColorFromName(googleReview.reviewer.displayName);
+  
   return {
     id: googleReview.reviewId,
-    author: googleReview.reviewer.displayName,
+    name: formatName(googleReview.reviewer.displayName),
+    role: 'Verified Customer',
+    content: googleReview.comment,
     rating: mapStarRating(googleReview.starRating),
-    text: googleReview.comment,
     createdAt: googleReview.createTime,
-    profilePhotoUrl: googleReview.reviewer.profilePhotoUrl,
+    image: googleReview.reviewer.profilePhotoUrl || 
+      `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${backgroundColor}&color=fff&size=100&bold=true&format=png`,
+    location: 'Montreal, QC',
+    source: 'google',
     url: `https://maps.google.com/?q=${googleReview.name}`,
   };
+}
+
+function formatName(fullName: string): string {
+  if (!fullName || fullName.trim() === '') return 'Google User';
+  
+  const parts = fullName.trim().split(/\s+/);
+  if (parts.length === 0) return 'Google User';
+  if (parts.length === 1) return parts[0];
+  
+  return `${parts[0]} ${parts[parts.length - 1].charAt(0)}.`;
+}
+
+function getInitials(name: string): string {
+  if (!name || name === '') return 'GU';
+  
+  const parts = name.trim().split(/\s+/).filter(part => part.length > 0);
+  if (parts.length === 0) return 'GU';
+  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
+
+function getColorFromName(name: string): string {
+  const colors = [
+    '6366f1', '8b5cf6', '06b6d4', '10b981', 'f59e0b',
+    'ef4444', '84cc16', 'f97316', 'ec4899', '3b82f6'
+  ];
+  
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  
+  return colors[Math.abs(hash) % colors.length];
 }
 
 describe('Google Business Profile Review Mapper', () => {
@@ -55,11 +96,14 @@ describe('Google Business Profile Review Mapper', () => {
 
     // Assert all required fields are mapped correctly
     expect(mappedReview.id).toBe('review_123');
-    expect(mappedReview.author).toBe('John Doe');
+    expect(mappedReview.name).toBe('John D.');
+    expect(mappedReview.role).toBe('Verified Customer');
     expect(mappedReview.rating).toBe(5);
-    expect(mappedReview.text).toBe('Excellent service! Highly recommend.');
+    expect(mappedReview.content).toBe('Excellent service! Highly recommend.');
     expect(mappedReview.createdAt).toBe('2024-02-15T10:30:00Z');
-    expect(mappedReview.profilePhotoUrl).toBe('https://example.com/avatar.jpg');
+    expect(mappedReview.image).toBe('https://example.com/avatar.jpg');
+    expect(mappedReview.location).toBe('Montreal, QC');
+    expect(mappedReview.source).toBe('google');
     expect(mappedReview.url).toBe('https://maps.google.com/?q=accounts/123/locations/456');
   });
 
@@ -78,9 +122,9 @@ describe('Google Business Profile Review Mapper', () => {
     const mappedReview = mapGoogleReviewToReview(reviewWithoutPhoto);
 
     expect(mappedReview.id).toBe('review_456');
-    expect(mappedReview.author).toBe('Jane Smith');
+    expect(mappedReview.name).toBe('Jane S.');
     expect(mappedReview.rating).toBe(4);
-    expect(mappedReview.profilePhotoUrl).toBeUndefined();
+    expect(mappedReview.image).toContain('ui-avatars.com'); // Should generate avatar URL
   });
 
   it('should map star ratings correctly', () => {

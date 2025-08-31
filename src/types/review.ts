@@ -1,9 +1,13 @@
 export interface Review {
   id: string;
-  author: string;
+  name: string;
+  role: string;
+  content: string;
   rating: number;
-  text: string;
   createdAt: string;
-  profilePhotoUrl?: string;
+  image: string;
+  location: string;
+  project?: string;
+  source?: string;
   url?: string;
 }

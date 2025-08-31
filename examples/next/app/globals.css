@@ -1,42 +1,21 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Custom base styles to match main-website */
-body {
-  color: rgb(17 24 39);
-  -webkit-font-smoothing: antialiased;
+@layer base {
+  body {
+    @apply text-gray-900 antialiased;
+  }
 }
 
 /* Custom component styles */
-.container-custom {
-  max-width: 80rem;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-@media (min-width: 640px) {
+@layer components {
   .container-custom {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
-}
-
-@media (min-width: 1024px) {
-  .container-custom {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-}
-
-.section-padding {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-}
-
-@media (min-width: 1024px) {
+  
   .section-padding {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    @apply py-16 lg:py-24;
   }
 }
