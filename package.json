@@ -5,6 +5,7 @@
   "author": "Your Name",
   "license": "MIT",
   "main": "lib/services/testimonials.ts",
+  "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .ts,.tsx",
@@ -24,6 +25,7 @@
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.0.0",
+    "ts-node": "^10.9.0",
     "typescript": "^5.8.3"
   }
 }
