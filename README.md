@@ -1,4 +1,4 @@
-# Testimonials Component AWS
+# Testimonials Component
 
 A minimal, production-ready testimonials component that fetches real Google Business Profile reviews on the server and renders them with React.
 
@@ -28,16 +28,33 @@ A minimal, production-ready testimonials component that fetches real Google Busi
 
 ## Usage
 
+### Server-side (Recommended)
+
 ```tsx
 import { Testimonials } from './src/components/Testimonials';
+import { fetchGoogleReviews } from './src/server/fetchGoogleReviews';
 import type { Review } from './src/types/review';
 
 // Fetch reviews server-side
-import { fetchGoogleReviews } from './src/server/fetchGoogleReviews';
 const reviews = await fetchGoogleReviews();
 
 // Render component
 <Testimonials reviews={reviews} title="Customer Reviews" limit={6} />
+```
+
+### Client-side (via API)
+
+```tsx
+// See examples/next/app/page.tsx for full implementation
+const [reviews, setReviews] = useState<Review[]>([]);
+
+useEffect(() => {
+  fetch('/api/testimonials')
+    .then(res => res.json())
+    .then(setReviews);
+}, []);
+
+<Testimonials reviews={reviews} />
 ```
 
 ## Google Business Profile API
@@ -89,6 +106,40 @@ interface Review {
   url?: string;
 }
 ```
+
+## Testing
+
+Run the test suite:
+
+```bash
+npm test
+```
+
+Current test coverage includes Google Business Profile API response mapping and TypeScript type validation.
+
+## Demo
+
+For a live demo, check out the Next.js example at `/examples/next`:
+
+```bash
+cd examples/next
+npm install
+npm run dev
+# Visit http://localhost:4000
+```
+
+The demo shows both real Google Business Profile data (if configured) and graceful fallback to mock data.
+
+## AWS Hosting
+
+The project includes AWS Lambda deployment examples for serverless hosting:
+
+1. **Lambda Function**: Deploy the testimonials fetcher as a serverless function
+2. **API Gateway**: Create REST endpoints for client-side consumption
+3. **CloudFront**: Optional CDN for global performance
+4. **ECS/Fargate**: For containerized deployments
+
+See `/examples/aws-lambda/` for complete deployment instructions.
 
 ## License
 
