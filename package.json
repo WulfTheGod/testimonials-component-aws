@@ -6,7 +6,10 @@
   "license": "MIT",
   "main": "lib/services/testimonials.ts",
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "peerDependencies": {
     "@aws-sdk/client-dynamodb": "^3.0.0",
@@ -16,6 +19,11 @@
   "devDependencies": {
     "@types/node": "^20.19.2",
     "@types/react": "^18",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.0.0",
     "typescript": "^5.8.3"
   }
 }
