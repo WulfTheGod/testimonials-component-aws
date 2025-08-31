@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useCallback } from 'react';
 import type { Review } from '../types/review';
 
 interface TestimonialsProps {
@@ -7,272 +9,11 @@ interface TestimonialsProps {
   limit?: number;
 }
 
-const styles = `
-.testimonials-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 3rem 1rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  min-height: 60vh;
-}
 
-.testimonials-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 3rem;
-  color: #1e293b;
-  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-  gap: 2rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.testimonial-card {
-  position: relative;
-  background: white;
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-}
-
-.testimonial-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-  border-color: #10b981;
-}
-
-.testimonial-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  border-radius: 1rem;
-}
-
-.testimonial-card:hover::before {
-  opacity: 0.05;
-}
-
-.google-badge {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  padding: 0.5rem 0.75rem;
-  border-radius: 9999px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #374151;
-  z-index: 10;
-}
-
-.quote-icon {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  color: #10b981;
-  opacity: 0.3;
-  width: 2.5rem;
-  height: 2.5rem;
-  z-index: 5;
-}
-
-.testimonial-content {
-  position: relative;
-  z-index: 10;
-}
-
-.testimonial-rating {
-  display: flex;
-  gap: 0.25rem;
-  margin-bottom: 1.5rem;
-}
-
-.star {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-.star-filled {
-  color: #fbbf24;
-  filter: drop-shadow(0 1px 2px rgba(251, 191, 36, 0.3));
-}
-
-.star-empty {
-  color: #d1d5db;
-}
-
-.testimonial-text {
-  color: #374151;
-  line-height: 1.7;
-  margin: 0 0 2rem 0;
-  font-size: 1.125rem;
-  position: relative;
-  z-index: 10;
-}
-
-.testimonial-text::before {
-  content: '"';
-  font-size: 4rem;
-  color: #10b981;
-  opacity: 0.2;
-  position: absolute;
-  left: -1rem;
-  top: -1rem;
-  font-family: serif;
-  line-height: 1;
-  z-index: -1;
-}
-
-.testimonial-author-section {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  position: relative;
-  z-index: 10;
-}
-
-.testimonial-avatar {
-  position: relative;
-}
-
-.testimonial-avatar img {
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.testimonial-avatar::after {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #10b981, #059669);
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.testimonial-card:hover .testimonial-avatar::after {
-  opacity: 1;
-}
-
-.testimonial-avatar-fallback {
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #10b981, #059669);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.testimonial-author-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.testimonial-author {
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0;
-  font-size: 1.125rem;
-  line-height: 1.2;
-}
-
-.testimonial-date {
-  color: #64748b;
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
-  font-weight: 500;
-}
-
-.testimonial-link {
-  color: #10b981;
-  text-decoration: none;
-  font-size: 0.875rem;
-  margin-left: 0.5rem;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-.testimonial-link:hover {
-  color: #059669;
-  text-decoration: underline;
-}
-
-@media (max-width: 768px) {
-  .testimonials-container {
-    padding: 2rem 1rem;
-  }
-  
-  .testimonials-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .testimonials-title {
-    font-size: 2rem;
-  }
-  
-  .testimonial-card {
-    padding: 1.5rem;
-  }
-  
-  .testimonials-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .testimonials-container {
-    padding: 1.5rem 0.75rem;
-  }
-  
-  .testimonial-card {
-    padding: 1.25rem;
-  }
-  
-  .testimonials-title {
-    font-size: 1.75rem;
-  }
-}
-`;
-
-function StarIcon({ filled }: { filled: boolean }) {
+function StarIcon({ filled, className = '' }: { filled: boolean; className?: string }) {
   return (
     <svg
-      className={`star ${filled ? 'star-filled' : 'star-empty'}`}
+      className={`${className} ${filled ? 'text-yellow-400 fill-current' : 'text-gray-300 fill-current'}`}
       viewBox="0 0 20 20"
       fill="currentColor"
       aria-hidden="true"
@@ -288,7 +29,7 @@ function StarIcon({ filled }: { filled: boolean }) {
 
 function QuoteIcon() {
   return (
-    <svg className="quote-icon" viewBox="0 0 24 24" fill="currentColor">
+    <svg className="w-10 h-10 drop-shadow-sm" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/>
     </svg>
   );
@@ -332,97 +73,215 @@ function isGoogleReview(review: Review): boolean {
   return review.url?.includes('google') || review.url?.includes('maps.google') || false;
 }
 
-export function Testimonials({ reviews, title = 'Customer Reviews', limit = 6 }: TestimonialsProps) {
+// Individual testimonial card component
+function TestimonialCard({ 
+  review, 
+  isActive = false, 
+  isPreview = false,
+  onClick 
+}: {
+  review: Review;
+  isActive?: boolean;
+  isPreview?: boolean;
+  onClick?: () => void;
+}) {
+  const isGoogle = isGoogleReview(review);
+  
+  const cardClasses = isPreview
+    ? "group relative bg-white rounded-xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:shadow-md hover:border-emerald-200 transition-all duration-300 scale-85 opacity-60 hover:opacity-75"
+    : "group relative bg-white rounded-2xl p-8 shadow-xl border border-gray-100 transition-all duration-500 transform";
+
+  const activeClasses = isActive && !isPreview 
+    ? "shadow-2xl ring-2 ring-emerald-300 border-emerald-200 scale-102" 
+    : "";
+
+  return (
+    <div className={`${cardClasses} ${activeClasses}`} onClick={onClick}>
+      {/* Google Badge - Top right for Google reviews */}
+      {isGoogle && !isPreview && (
+        <div className="absolute top-6 right-6">
+          <div className="flex items-center space-x-1 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-md border border-gray-100">
+            <GoogleIcon />
+            <span className="text-xs font-medium text-gray-700">Google</span>
+          </div>
+        </div>
+      )}
+      
+      {/* Quote Icon - For non-Google reviews */}
+      {!isGoogle && !isPreview && (
+        <div className="absolute top-6 right-6 text-emerald-300 group-hover:text-emerald-400 transition-colors">
+          <QuoteIcon />
+        </div>
+      )}
+
+      {/* Rating */}
+      <div className={`flex items-center space-x-1 ${isPreview ? 'mb-2' : 'mb-4'}`}>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <StarIcon
+            key={star}
+            filled={star <= review.rating}
+            className={isPreview ? 'w-3 h-3' : 'w-5 h-5'}
+          />
+        ))}
+      </div>
+
+      {/* Content */}
+      <blockquote className={`text-gray-700 leading-relaxed relative z-10 ${
+        isPreview 
+          ? 'text-sm mb-3 line-clamp-2' 
+          : 'text-lg mb-6 leading-7'
+      }`}>
+        &ldquo;{truncateText(review.text, isPreview ? 120 : 280)}&rdquo;
+      </blockquote>
+
+      {/* Author */}
+      <div className="flex items-center space-x-4">
+        <div className="relative">
+          {review.profilePhotoUrl ? (
+            <div
+              className={`${isPreview ? 'w-10 h-10' : 'w-14 h-14'} rounded-full bg-cover bg-center bg-gray-200 shadow-md`}
+              style={{ backgroundImage: `url(${review.profilePhotoUrl})` }}
+            />
+          ) : (
+            <div className={`${isPreview ? 'w-10 h-10 text-sm' : 'w-14 h-14 text-xl'} rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-bold shadow-md`}>
+              {review.author.charAt(0).toUpperCase()}
+            </div>
+          )}
+          <div className="absolute inset-0 rounded-full ring-2 ring-emerald-300 group-hover:ring-emerald-400 transition-colors" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className={`font-bold text-navy truncate ${isPreview ? 'text-sm' : 'text-lg'}`}>
+            {review.author}
+          </div>
+          <div className={`text-gray-600 truncate font-medium ${isPreview ? 'text-xs' : 'text-sm'}`}>
+            Verified Customer
+          </div>
+          {!isPreview && (
+            <div className="text-xs text-gray-400 truncate font-normal mt-0.5">
+              {formatDate(review.createdAt)}
+              {review.url && (
+                <a 
+                  href={review.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-emerald-500 hover:text-emerald-600 ml-2 transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  View original
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Hover Effect Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+    </div>
+  );
+}
+
+export function Testimonials({ reviews, title = 'What Our Clients Say', limit = 6 }: TestimonialsProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const displayedReviews = reviews.slice(0, limit);
+
+  const goToSlide = useCallback((index: number) => {
+    setCurrentIndex(index);
+  }, []);
+
+  const getPreviewTestimonials = useCallback(() => {
+    if (displayedReviews.length <= 1) return [];
+    
+    const previews = [];
+    for (let i = 1; i <= Math.min(2, displayedReviews.length - 1); i++) {
+      const index = (currentIndex + i) % displayedReviews.length;
+      previews.push(displayedReviews[index]);
+    }
+    return previews;
+  }, [displayedReviews, currentIndex]);
 
   if (displayedReviews.length === 0) {
     return null;
   }
 
+  const currentTestimonial = displayedReviews[currentIndex];
+  const previewTestimonials = getPreviewTestimonials();
+
   return (
-    <>
-      <style dangerouslySetInnerHTML={{ __html: styles }} />
-      <section className="testimonials-container" aria-labelledby="testimonials-title">
-        {title && (
-          <h2 id="testimonials-title" className="testimonials-title">
+    <section className="section-padding bg-gradient-to-b from-gray-100 via-gray-50 to-gray-100 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-navy/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+      
+      <div className="container-custom relative z-10">
+        {/* Header */}
+        <div className="text-center mb-10">
+          <span className="inline-block px-4 py-2 bg-gradient-to-r from-navy/10 to-emerald-100/80 text-navy font-semibold rounded-full text-sm mb-4 shadow-sm">
+            Client Stories
+          </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-navy mb-4 leading-tight">
             {title}
           </h2>
+          <p className="text-base md:text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
+            Hear from satisfied clients who have experienced our exceptional service firsthand.
+          </p>
+        </div>
+
+        {/* Single testimonial on mobile, Carousel on desktop */}
+        <div className="block lg:hidden">
+          <div className="relative min-h-[280px] flex items-center">
+            <TestimonialCard
+              review={currentTestimonial}
+              isActive={true}
+            />
+          </div>
+        </div>
+
+        {/* Desktop: Main + Preview layout */}
+        <div className="hidden lg:block">
+          <div className="grid grid-cols-12 gap-6 min-h-[300px] items-start">
+            {/* Main testimonial */}
+            <div className="col-span-7">
+              <TestimonialCard
+                review={currentTestimonial}
+                isActive={true}
+              />
+            </div>
+
+            {/* Preview testimonials */}
+            {previewTestimonials.length > 0 && (
+              <div className="col-span-5 space-y-4">
+                {previewTestimonials.map((testimonial, index) => (
+                  <TestimonialCard
+                    key={`${testimonial.id}-preview-${index}`}
+                    review={testimonial}
+                    isPreview={true}
+                    onClick={() => goToSlide((currentIndex + index + 1) % displayedReviews.length)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Navigation dots */}
+        {displayedReviews.length > 1 && (
+          <div className="flex justify-center mt-8 space-x-2">
+            {displayedReviews.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === currentIndex 
+                    ? 'bg-emerald-500 w-6' 
+                    : 'bg-gray-300 hover:bg-gray-400'
+                }`}
+                aria-label={`Go to testimonial ${index + 1}`}
+              />
+            ))}
+          </div>
         )}
-        
-        <ul className="testimonials-grid" role="list">
-          {displayedReviews.map((review) => {
-            const isGoogle = isGoogleReview(review);
-            
-            return (
-              <li key={review.id} className="testimonial-card">
-                {/* Google Badge or Quote Icon */}
-                {isGoogle ? (
-                  <div className="google-badge">
-                    <GoogleIcon />
-                    <span>Google</span>
-                  </div>
-                ) : (
-                  <QuoteIcon />
-                )}
-                
-                <div className="testimonial-content">
-                  {/* Rating */}
-                  <div 
-                    className="testimonial-rating"
-                    role="img"
-                    aria-label={`${review.rating} out of 5 stars`}
-                  >
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <StarIcon key={star} filled={star <= review.rating} />
-                    ))}
-                  </div>
-                  
-                  {/* Review Text */}
-                  <blockquote>
-                    <p className="testimonial-text">
-                      {truncateText(review.text)}
-                    </p>
-                  </blockquote>
-                  
-                  {/* Author Section */}
-                  <div className="testimonial-author-section">
-                    <div className="testimonial-avatar">
-                      {review.profilePhotoUrl ? (
-                        <img
-                          src={review.profilePhotoUrl}
-                          alt={`${review.author}'s profile`}
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="testimonial-avatar-fallback">
-                          {review.author.charAt(0).toUpperCase()}
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="testimonial-author-info">
-                      <h3 className="testimonial-author">{review.author}</h3>
-                      <div className="testimonial-date">
-                        {formatDate(review.createdAt)}
-                        {review.url && (
-                          <a 
-                            href={review.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="testimonial-link"
-                          >
-                            View original
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
