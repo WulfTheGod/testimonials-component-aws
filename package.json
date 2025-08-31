@@ -1,0 +1,21 @@
+{
+  "name": "testimonials-component",
+  "version": "1.0.0",
+  "description": "TypeScript testimonials component and service layer",
+  "author": "Your Name",
+  "license": "MIT",
+  "main": "lib/services/testimonials.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@aws-sdk/client-dynamodb": "^3.0.0",
+    "@aws-sdk/lib-dynamodb": "^3.0.0",
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.2",
+    "@types/react": "^18",
+    "typescript": "^5.8.3"
+  }
+}
