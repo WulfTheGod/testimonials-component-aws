@@ -28,7 +28,7 @@ A minimal, production-ready testimonials component that fetches real Google Busi
 
 ## Demo
 
-![Testimonials Component Demo](https://i.imgur.com/EmnwyeW.png)
+![Testimonials Component Demo](https://i.imgur.com/KNv6RYX.jpeg)
 
 ## Usage
 
