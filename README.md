@@ -28,7 +28,7 @@ A minimal, production-ready testimonials component that fetches real Google Busi
 
 ## Demo
 
-![Testimonials Component Demo](https://i.imgur.com/KNv6RYX.jpeg)
+![Testimonials Component Demo - Professional testimonial carousel showcasing real customer reviews with profile images, varied customer names and locations, star ratings, and integrated "Leave a Review" call-to-action](https://i.imgur.com/KNv6RYX.jpeg)
 
 ## Usage
 
