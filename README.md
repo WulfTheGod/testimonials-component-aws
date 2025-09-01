@@ -26,6 +26,10 @@ A minimal, production-ready testimonials component that fetches real Google Busi
    # Upload function.zip to AWS Lambda
    ```
 
+## Demo
+
+![Testimonials Component Demo](https://i.imgur.com/EmnwyeW.png)
+
 ## Usage
 
 ### Simple Example
