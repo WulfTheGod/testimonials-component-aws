@@ -33,5 +33,33 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 
-# AWS
+# AWS & Secrets
 .aws/
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.cer
+*.crt
+*.der
+secrets.json
+config.json
+
+# OS & Editor
+Thumbs.db
+*.tmp
+*.temp
+.cache/
+.nyc_output/
+coverage/
+
+# Security & Sensitive Files
+*.log
+*.pid
+*.seed
+*.pid.lock
+.npm
+.eslintcache
+.stylelintcache
