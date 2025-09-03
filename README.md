@@ -2,7 +2,7 @@
 
 🚀 A production-ready React testimonials component with **AWS deployment examples**, serverless Lambda functions, and S3/CloudFront hosting capabilities. Perfect for showcasing customer reviews with enterprise-grade infrastructure.
 
-**🌐 <a href="http://testimonials-aws-demo.wulfthegod.com.s3-website-us-east-1.amazonaws.com" target="_blank" rel="noopener noreferrer">Live Demo</a>** - Deployed on AWS S3
+**🌐 <a href="http://testimonials-aws-demo.wulfthegod.com/" target="_blank" rel="noopener noreferrer">Live Demo</a>** - Deployed on AWS S3
 
 [![Deploy to AWS](https://img.shields.io/badge/Deploy%20to-AWS-FF9900?style=for-the-badge&logo=amazon-aws)](./docs/AWS_DEPLOYMENT.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
