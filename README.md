@@ -2,7 +2,9 @@
 
 🚀 A production-ready React testimonials component with **AWS deployment examples**, serverless Lambda functions, and S3/CloudFront hosting capabilities. Perfect for showcasing customer reviews with enterprise-grade infrastructure.
 
-[![Deploy to AWS](https://img.shields.io/badge/Deploy%20to-AWS-FF9900?style=for-the-badge&logo=amazon-aws)](./AWS_DEPLOYMENT.md)
+**🌐 [Live Demo](http://testimonials-aws-demo.wulfthegod.com.s3-website-us-east-1.amazonaws.com)** - Deployed on AWS S3
+
+[![Deploy to AWS](https://img.shields.io/badge/Deploy%20to-AWS-FF9900?style=for-the-badge&logo=amazon-aws)](./docs/AWS_DEPLOYMENT.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![React 18](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
 
@@ -46,11 +48,14 @@ cp .env.example .env.production
 ```
 
 **Deployment Options:**
-- **[AWS Amplify](./AWS_DEPLOYMENT.md#option-1-aws-amplify-recommended---easiest)** - Managed hosting with CI/CD
-- **[S3 + CloudFront](./AWS_DEPLOYMENT.md#option-2-s3--cloudfront)** - Static hosting with CDN
+- **[AWS Amplify](./docs/AWS_DEPLOYMENT.md#option-1-aws-amplify-recommended---easiest)** - Managed hosting with CI/CD
+- **[S3 Static Hosting](./docs/AWS_DEPLOYMENT.md#option-2-s3-static-hosting-http)** - Simple HTTP hosting
+- **[S3 + CloudFront](./docs/AWS_DEPLOYMENT.md)** - Add HTTPS and global CDN (optional)
 - **[Lambda Function](./examples/aws-lambda)** - Serverless API endpoint
 
-See [AWS_DEPLOYMENT.md](./AWS_DEPLOYMENT.md) for detailed instructions.
+📚 **Documentation:**
+- [AWS IAM Setup Guide](./docs/AWS_IAM_SETUP.md) - Create IAM user and credentials
+- [AWS Deployment Guide](./docs/AWS_DEPLOYMENT.md) - Detailed deployment instructions
 
 ## Demo
 

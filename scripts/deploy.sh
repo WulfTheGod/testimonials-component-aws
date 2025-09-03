@@ -43,6 +43,7 @@ cd ../..
 
 # Deploy to S3
 echo "☁️  Uploading to S3..."
+AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
 aws s3 sync examples/next/out "s3://$S3_BUCKET_NAME" \
   --delete \
   --cache-control "public, max-age=31536000" \
@@ -50,6 +51,7 @@ aws s3 sync examples/next/out "s3://$S3_BUCKET_NAME" \
   --exclude "*.json"
 
 # Upload HTML files with shorter cache
+AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
 aws s3 sync examples/next/out "s3://$S3_BUCKET_NAME" \
   --exclude "*" \
   --include "*.html" \
@@ -59,6 +61,7 @@ aws s3 sync examples/next/out "s3://$S3_BUCKET_NAME" \
 # Invalidate CloudFront if configured
 if [ ! -z "$CLOUDFRONT_DISTRIBUTION_ID" ]; then
   echo "🔄 Invalidating CloudFront cache..."
+  AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
   aws cloudfront create-invalidation \
     --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" \
     --paths "/*"

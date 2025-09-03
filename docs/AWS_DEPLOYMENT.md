@@ -7,17 +7,20 @@
    cp .env.example .env.production
    ```
 
-2. **Edit `.env.production`** with your AWS values:
+2. **Set up AWS credentials**: Follow [AWS_IAM_SETUP.md](./AWS_IAM_SETUP.md) to create an IAM user
+
+3. **Edit `.env.production`** with your AWS values:
    ```bash
    # Edit with your preferred editor
    nano .env.production
    ```
 
-3. **Set your values**:
+4. **Set your values**:
    - `S3_BUCKET_NAME`: Your unique S3 bucket name
    - `AWS_REGION`: Your preferred AWS region (default: us-east-1)
    - `DOMAIN_NAME`: Your custom domain (optional)
-   - `CLOUDFRONT_DISTRIBUTION_ID`: Your CloudFront ID (optional)
+   - `AWS_ACCESS_KEY_ID`: From IAM setup
+   - `AWS_SECRET_ACCESS_KEY`: From IAM setup
 
 ## 🚀 Quick Start
 
@@ -55,7 +58,9 @@
    - Go to Domain management
    - Add your domain
 
-### Option 2: S3 + CloudFront
+### Option 2: S3 Static Hosting (HTTP)
+
+**Note**: This option provides HTTP hosting. CloudFront is optional and only needed for HTTPS/SSL.
 
 1. **Create S3 bucket**:
    ```bash
@@ -106,7 +111,19 @@
    aws s3 sync out/ s3://your-bucket-name --delete
    ```
 
-### Option 3: GitHub Actions CI/CD
+### Option 3: Using Scripts (Recommended)
+
+After setting up your `.env.production`:
+
+```bash
+# Create AWS infrastructure
+./scripts/setup-aws.sh
+
+# Deploy the application
+./scripts/deploy.sh
+```
+
+### Option 4: GitHub Actions CI/CD
 
 1. **Fork this repository**
 
@@ -122,21 +139,21 @@
 
 ## 🔧 AWS Services Demonstrated
 
-- **S3**: Static website hosting
-- **CloudFront**: CDN for global distribution
+- **S3**: Static website hosting (HTTP)
+- **CloudFront**: CDN for global distribution and HTTPS (optional)
 - **Lambda**: Serverless function example (see `examples/aws-lambda/`)
 - **API Gateway**: RESTful API pattern
 - **Route 53**: DNS management (optional)
-- **ACM**: SSL certificates (optional)
+- **ACM**: SSL certificates (optional, requires CloudFront)
 
 ## 📊 Architecture Benefits
 
 - **Serverless**: No infrastructure to manage
 - **Scalable**: Handles traffic spikes automatically
 - **Cost-effective**: Pay only for what you use
-- **Global**: CloudFront edge locations worldwide
-- **Secure**: HTTPS by default with ACM
-- **Fast**: Static content served from edge locations
+- **Global**: CloudFront edge locations worldwide (optional)
+- **Secure**: HTTPS with CloudFront + ACM (optional, S3 provides HTTP)
+- **Fast**: Static content served from S3 (or edge locations with CloudFront)
 
 ## 💡 Interview Talking Points
 
@@ -170,6 +187,7 @@ testimonials-component-aws/
 │   ├── next/              # Next.js demo application
 │   └── aws-lambda/        # Lambda function example
 ├── scripts/               # Deployment scripts
+├── docs/                  # Documentation
 └── .github/workflows/     # CI/CD pipelines
 ```
 

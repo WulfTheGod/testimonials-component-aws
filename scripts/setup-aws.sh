@@ -31,6 +31,7 @@ echo ""
 
 # Create S3 bucket
 echo "📦 Creating S3 bucket..."
+AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
 aws s3api create-bucket \
   --bucket "$S3_BUCKET_NAME" \
   --region "$AWS_REGION" \
@@ -39,6 +40,7 @@ aws s3api create-bucket \
 
 # Enable static website hosting
 echo "🌐 Configuring static website hosting..."
+AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
 aws s3api put-bucket-website \
   --bucket "$S3_BUCKET_NAME" \
   --website-configuration '{
@@ -64,12 +66,14 @@ cat > /tmp/bucket-policy.json <<EOF
 EOF
 
 # Disable block public access (required for public website)
+AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
 aws s3api put-public-access-block \
   --bucket "$S3_BUCKET_NAME" \
   --public-access-block-configuration \
   "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
 
 # Apply bucket policy
+AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \
 aws s3api put-bucket-policy \
   --bucket "$S3_BUCKET_NAME" \
   --policy file:///tmp/bucket-policy.json
@@ -80,10 +84,13 @@ rm -f /tmp/bucket-policy.json
 echo ""
 echo "✅ S3 bucket configured successfully!"
 echo ""
-echo "📋 Next Steps:"
-echo "1. Run './scripts/deploy.sh' to deploy the application"
-echo "2. Access your site at:"
+echo "🌐 Your S3 website URL:"
 echo "   http://${S3_BUCKET_NAME}.s3-website-${AWS_REGION}.amazonaws.com"
 echo ""
-echo "Optional: Set up CloudFront for HTTPS and better performance"
-echo "Optional: Configure Route 53 for custom domain"
+echo "📋 Next Steps:"
+echo "1. Run './scripts/deploy.sh' to deploy the application"
+echo "2. (Optional) Create CloudFront distribution:"
+echo "   aws cloudfront create-distribution --distribution-config file://cloudfront-config.json"
+echo "3. (Optional) Configure Route 53 for custom domain"
+echo ""
+echo "💡 For now, you can test with just S3 hosting, then add CloudFront later for HTTPS"

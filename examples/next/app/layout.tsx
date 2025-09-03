@@ -1,14 +1,15 @@
 import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Testimonials Example',
-  description: 'Example usage of the testimonials component',
+  title: 'AWS Demo - Testimonials Component',
+  description: 'Production-ready testimonials component with AWS integration',
 };
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <html lang="en">
