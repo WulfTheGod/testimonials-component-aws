@@ -1,30 +1,56 @@
-# Testimonials Component
+# Testimonials Component for AWS
 
-A minimal, production-ready testimonials component that fetches real Google Business Profile reviews on the server and renders them with React.
+🚀 A production-ready React testimonials component with **AWS deployment examples**, serverless Lambda functions, and S3/CloudFront hosting capabilities. Perfect for showcasing customer reviews with enterprise-grade infrastructure.
 
-## Quick Start
+[![Deploy to AWS](https://img.shields.io/badge/Deploy%20to-AWS-FF9900?style=for-the-badge&logo=amazon-aws)](./AWS_DEPLOYMENT.md)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![React 18](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
 
-1. **Add environment variables**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your Google Business Profile credentials
-   ```
+## 🌟 Features
 
-2. **Run Next.js example**
-   ```bash
-   cd examples/next
-   npm install
-   npm run dev
-   ```
-   Visit http://localhost:4000
+- **AWS-Ready**: Deploy to S3, CloudFront, Amplify, or Lambda
+- **TypeScript**: Full type safety and IntelliSense support
+- **Production-Ready**: Error handling, loading states, and fallbacks
+- **Responsive**: Mobile-first design with smooth animations
+- **Customizable**: Easy to style and extend
+- **Mock Data**: Works out-of-the-box without API setup
 
-3. **Optional: Deploy Lambda**
-   ```bash
-   cd examples/aws-lambda
-   npm install
-   npm run package
-   # Upload function.zip to AWS Lambda
-   ```
+## 🚀 Quick Start
+
+### Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run the Next.js example
+cd examples/next
+npm install
+npm run dev
+```
+
+Visit http://localhost:4000
+
+### Deploy to AWS
+
+```bash
+# 1. Setup your environment
+cp .env.example .env.production
+# Edit .env.production with your AWS values
+
+# 2. Create AWS infrastructure
+./scripts/setup-aws.sh
+
+# 3. Deploy the application
+./scripts/deploy.sh
+```
+
+**Deployment Options:**
+- **[AWS Amplify](./AWS_DEPLOYMENT.md#option-1-aws-amplify-recommended---easiest)** - Managed hosting with CI/CD
+- **[S3 + CloudFront](./AWS_DEPLOYMENT.md#option-2-s3--cloudfront)** - Static hosting with CDN
+- **[Lambda Function](./examples/aws-lambda)** - Serverless API endpoint
+
+See [AWS_DEPLOYMENT.md](./AWS_DEPLOYMENT.md) for detailed instructions.
 
 ## Demo
 
