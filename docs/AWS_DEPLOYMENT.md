@@ -176,19 +176,24 @@ npm install
 npm run dev
 ```
 
-Visit http://localhost:4000 to see the demo.
+Visit [http://localhost:4000](http://localhost:4000) or see the [live demo](http://testimonials-aws-demo.wulfthegod.com/).
 
 ## 📁 Project Structure
 
 ```
 testimonials-component-aws/
 ├── src/                    # React component source
+│   ├── components/         # WorkingTestimonials.tsx
+│   ├── types/             # TypeScript type definitions
+│   ├── server/            # Server-side utilities
+│   ├── mock/              # Development mock data
+│   └── index.ts           # Main exports
 ├── examples/
 │   ├── next/              # Next.js demo application
 │   └── aws-lambda/        # Lambda function example
-├── scripts/               # Deployment scripts
+├── scripts/               # Deployment scripts (setup-aws.sh, deploy.sh)
 ├── docs/                  # Documentation
-└── .github/workflows/     # CI/CD pipelines
+└── .env.example           # Environment template
 ```
 
 ## 🔗 Resources
