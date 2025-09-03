@@ -2,10 +2,53 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { cn, truncateText } from "./testimonials/utils";
-import { spacing, radii, shadows, opacity } from "./testimonials/tokens";
-import { durations, transforms, variants } from "./testimonials/motion";
 import type { Review } from "../types/review";
+
+const cn = (...classes: (string | undefined | false)[]) => classes.filter(Boolean).join(' ');
+
+const truncateText = (text: string, maxLines: number = 5): string => {
+  const words = text.split(' ');
+  const maxWords = maxLines * 8;
+  if (words.length <= maxWords) return text;
+  return words.slice(0, maxWords).join(' ') + '...';
+};
+const durations = {
+  enter: 0.3,
+  hover: 0.2,
+  swap: 0.2,
+  stars: 0.15,
+};
+
+const variants = {
+  section: {
+    hidden: { opacity: 0, y: 10 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        staggerChildren: 0.08,
+        duration: durations.enter,
+        ease: [0.25, 0.46, 0.45, 0.94] as any,
+      },
+    },
+  },
+  card: {
+    hidden: {
+      opacity: 0,
+      y: 12,
+      scale: 0.98,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: durations.enter,
+        ease: [0.25, 0.46, 0.45, 0.94] as any,
+      },
+    },
+  },
+};
 
 export default function WorkingTestimonials({ reviews = [] }: { reviews?: Review[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,7 +56,6 @@ export default function WorkingTestimonials({ reviews = [] }: { reviews?: Review
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
 
-  // Use mock data from JSON file for consistency
   const defaultTestimonials: Review[] = [
     {
       id: "1",
@@ -62,7 +104,6 @@ export default function WorkingTestimonials({ reviews = [] }: { reviews?: Review
     testimonials[(currentIndex + 2) % testimonials.length],
   ] : [];
 
-  // Auto-advance
   useEffect(() => {
     if (testimonials.length <= 1) return;
     const timer = setInterval(() => {
@@ -73,14 +114,13 @@ export default function WorkingTestimonials({ reviews = [] }: { reviews?: Review
     return () => clearInterval(timer);
   }, [testimonials.length, isTransitioning]);
 
-  // Smooth card transition handler
   const handleCardTransition = useCallback((newIndex: number) => {
     if (isTransitioning || newIndex === currentIndex) return;
     
     setIsTransitioning(true);
     setCurrentIndex(newIndex);
     
-    const timer = setTimeout(() => setIsTransitioning(false), durations.swap * 1000);
+    const timer = setTimeout(() => setIsTransitioning(false), durations.swap * 800);
     return () => clearTimeout(timer);
   }, [currentIndex, isTransitioning]);
 
@@ -102,14 +142,13 @@ export default function WorkingTestimonials({ reviews = [] }: { reviews?: Review
           className="text-center mb-8 md:mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: durations.enter, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: durations.enter, ease: [0.22, 1, 0.36, 1] as any }}
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-3 tracking-tight">
             What Our Clients Say
           </h2>
           <p 
-            className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed" 
-            style={{ opacity: opacity.metadata }}
+            className="text-base md:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed opacity-70"
           >
             Hear from satisfied clients who have experienced our service firsthand.
           </p>
@@ -129,18 +168,16 @@ export default function WorkingTestimonials({ reviews = [] }: { reviews?: Review
             className={cn(
               'relative bg-white border border-slate-200/60',
               'transition-all duration-150 ease-out will-change-transform',
-              radii.card,
-              shadows.cardActive,
+              'rounded-2xl',
+              'shadow-[0_14px_40px_rgba(0,0,0,0.10)]',
               'z-10 px-6 py-6 md:px-8 md:py-7 min-h-[320px] flex flex-col'
             )}
-            style={{
-              scale: transforms.activeScale,
-            }}
             whileHover={!prefersReducedMotion ? {
-              y: transforms.liftY,
-              scale: 1.015,
-              transition: { duration: durations.hover },
+              y: -2,
+              scale: 1.01,
+              transition: { duration: durations.hover, ease: "easeOut" },
             } : {}}
+            whileTap={!prefersReducedMotion ? { scale: 0.98 } : {}}
           >
             {/* Quote icon */}
             <div className="absolute top-4 right-4 text-emerald-500/12 z-1">
@@ -213,8 +250,7 @@ export default function WorkingTestimonials({ reviews = [] }: { reviews?: Review
                   {currentTestimonial.name}
                 </div>
                 <div 
-                  className="text-sm font-medium text-slate-500"
-                  style={{ opacity: opacity.metadata }}
+                  className="text-sm font-medium text-slate-500 opacity-70"
                 >
                   {currentTestimonial.role} • {currentTestimonial.location}
                 </div>
@@ -237,23 +273,24 @@ export default function WorkingTestimonials({ reviews = [] }: { reviews?: Review
                 className={cn(
                   'relative bg-white border border-slate-200/50 cursor-pointer',
                   'transition-all duration-150 ease-out will-change-transform',
-                  radii.card,
-                  shadows.card,
+                  'rounded-2xl',
+                  'shadow-[0_10px_30px_rgba(0,0,0,0.06)]',
                   'z-1 px-5 py-5 md:px-6 md:py-6 min-h-[140px] flex flex-col',
-                  'hover:' + shadows.cardHover.replace('shadow-', '')
+                  'hover:shadow-[0_20px_50px_rgba(0,0,0,0.12)]'
                 )}
                 style={{
-                  opacity: opacity.preview,
-                  scale: transforms.previewScale,
-                  filter: 'brightness(0.97)',
+                  opacity: 0.9,
+                  scale: 0.99,
+                  filter: 'brightness(0.98)',
                 }}
                 whileHover={!prefersReducedMotion ? {
                   opacity: 1,
-                  scale: transforms.hoverScale,
-                  y: transforms.mobileLiftY,
-                  filter: 'brightness(1)',
-                  transition: { duration: durations.hover },
+                  scale: 1.005,
+                  y: -0.5,
+                  filter: 'brightness(1.01)',
+                  transition: { duration: durations.hover, ease: "easeOut" },
                 } : {}}
+                whileTap={!prefersReducedMotion ? { scale: 0.995 } : {}}
                 onClick={() => handleCardTransition((currentIndex + index + 1) % testimonials.length)}
               >
                 {/* Rating */}
@@ -303,8 +340,7 @@ export default function WorkingTestimonials({ reviews = [] }: { reviews?: Review
                       {review.name}
                     </div>
                     <div 
-                      className="text-xs font-medium text-slate-500"
-                      style={{ opacity: opacity.metadata }}
+                      className="text-xs font-medium text-slate-500 opacity-70"
                     >
                       {review.role} • {review.location}
                     </div>
@@ -334,12 +370,12 @@ export default function WorkingTestimonials({ reviews = [] }: { reviews?: Review
                 key={index}
                 onClick={() => handleCardTransition(index)}
                 className={cn(
-                  'rounded-full border-none cursor-pointer transition-all duration-150 ease-out p-0',
+                  'rounded-full border-none cursor-pointer transition-all duration-200 ease-out p-0',
                   index === currentIndex 
-                    ? 'w-2.5 h-2.5 bg-emerald-500 shadow-[0_0_0_3px_rgba(16,185,129,0.15),0_2px_4px_rgba(16,185,129,0.2)]'
-                    : 'w-1.5 h-1.5 bg-slate-300 hover:bg-slate-400 hover:scale-110'
+                    ? 'w-3 h-3 bg-emerald-500 shadow-[0_0_0_4px_rgba(16,185,129,0.2),0_3px_6px_rgba(16,185,129,0.3)]'
+                    : 'w-2.5 h-2.5 bg-slate-600 hover:bg-emerald-400 hover:scale-110 shadow-sm'
                 )}
-                style={{ opacity: index === currentIndex ? 1 : 0.4 }}
+                style={{ opacity: 1 }}
                 aria-label={`Go to testimonial ${index + 1}`}
                 aria-current={index === currentIndex ? 'true' : 'false'}
               />

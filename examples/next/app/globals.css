@@ -2,10 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom base styles to match main-website */
+/* Custom base styles */
 @layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  
   body {
-    @apply text-gray-900 antialiased;
+    @apply text-gray-900 antialiased font-sans;
+  }
+  
+  * {
+    @apply box-border;
   }
 }
 
@@ -17,5 +25,16 @@
   
   .section-padding {
     @apply py-16 lg:py-24;
+  }
+}
+
+/* Framer Motion compatibility */
+@layer utilities {
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .will-change-opacity {
+    will-change: opacity;
   }
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'AWS Demo - Testimonials Component',
@@ -13,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, fontFamily: 'system-ui, -apple-system, sans-serif', backgroundColor: '#f3f4f6' }}>
+      <body className="m-0 antialiased bg-gradient-to-b from-gray-50 via-white to-gray-50">
         {children}
       </body>
     </html>

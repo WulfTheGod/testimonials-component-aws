@@ -163,10 +163,11 @@ If no `GOOGLE_ACCESS_TOKEN` is provided, the component automatically falls back 
 
 ```
 src/
-├── components/Testimonials.tsx    # React component
+├── components/
+│   └── WorkingTestimonials.tsx    # Main React component
 ├── server/fetchGoogleReviews.ts   # Server-only fetcher
 ├── types/review.ts                # TypeScript types  
-└── mock/reviews.json              # Dev fallback data
+└── index.ts                       # Main exports
 
 examples/
 ├── next/                          # Next.js App Router example
@@ -178,11 +179,15 @@ examples/
 ```typescript
 interface Review {
   id: string;
-  author: string;
+  name: string;
+  role?: string;
+  content: string;
   rating: number;        // 1-5
-  text: string;
   createdAt: string;     // ISO date
-  profilePhotoUrl?: string;
+  image?: string;
+  location?: string;
+  project?: string;
+  source?: string;
   url?: string;
 }
 ```
