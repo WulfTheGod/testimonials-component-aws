@@ -49,28 +49,6 @@ export default function HomePage() {
         </p>
       </div>
       <WorkingTestimonials reviews={reviews} />
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <a 
-          href="https://github.com/WulfTheGod/testimonials-component-aws"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-block',
-            padding: '0.75rem 1.5rem',
-            backgroundColor: '#24292f',
-            color: 'white',
-            textDecoration: 'none',
-            borderRadius: '6px',
-            fontSize: '0.875rem',
-            fontWeight: '500',
-            transition: 'background-color 0.2s ease'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#32383f'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#24292f'}
-        >
-          View on GitHub
-        </a>
-      </div>
     </main>
   );
 }
