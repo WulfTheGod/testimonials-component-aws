@@ -57,11 +57,6 @@ cp .env.example .env.production
 - [AWS IAM Setup Guide](./docs/AWS_IAM_SETUP.md) - Create IAM user and credentials
 - [AWS Deployment Guide](./docs/AWS_DEPLOYMENT.md) - Detailed deployment instructions
 
-## Demo
-
-![Testimonials Component Demo - Professional testimonial carousel showcasing real customer reviews with profile images, varied customer names and locations, star ratings, and integrated "Leave a Review" call-to-action](https://i.imgur.com/KNv6RYX.jpeg)
-
-*Professional testimonial carousel featuring real customer reviews with custom profile images, diverse customer names and locations, 5-star ratings, and integrated "Leave a Review" call-to-action elements for enhanced social proof and engagement.*
 
 ## Usage
 
